@@ -13,7 +13,6 @@ use Illuminate\Queue\SerializesModels;
 class SendWelcomeUser extends Mailable
 {
     use Queueable, SerializesModels;
-
     public $user;
 
     public function __construct(User $user)
@@ -21,19 +20,13 @@ class SendWelcomeUser extends Mailable
         $this->user = $user;
     }
 
-    /**
-     * Get the message envelope.
-     */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Obbrigado por se registrar',
+            subject: 'Obrigado por se registrar',
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function content(): Content
     {
         return new Content(
@@ -41,11 +34,7 @@ class SendWelcomeUser extends Mailable
         );
     }
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
+
     public function attachments(): array
     {
         return [];

@@ -42,8 +42,8 @@ class UserController extends Controller
             if (!empty($user->user_id)) {
                 $user = User::find($user->user_id);
 
-                Mail::to('josecdia@hotmail.com', 'José bastiao')
-                    ->send(new SendWelcomeUser());
+                Mail::to($user->email)
+                    ->send(new SendWelcomeUser($user));
             }
 
             return $user;
