@@ -82,6 +82,11 @@ return [
             'replace_placeholders' => true,
         ],
 
+        'mail' => [
+            'driver' => 'log',
+            'level' => 'debug',
+        ],
+
         'papertrail' => [
             'driver' => 'monolog',
             'level' => env('LOG_LEVEL', 'debug'),

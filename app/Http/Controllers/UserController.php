@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendWelcomeUser;
+use App\Models\Plan;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class UserController extends Controller
             $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'email|required|max:255',
-                'password' => 'string|required|min:6|max:32',
+                'password' => 'string|required|min:8|max:32',
                 'plan_id' => 'required|integer',
                 'cpf' => 'string|required|min:14|max:14',
                 'date_birth' => 'date|required'
@@ -38,13 +39,11 @@ class UserController extends Controller
             }
 
             $user = User::create($data);
+            $plan = Plan::find($user->plan_id);
 
-            if (!empty($user->user_id)) {
-                $user = User::find($user->user_id);
+            Mail::to($user->email, $user->name)->send(new SendWelcomeUser($user, $plan));
 
-                Mail::to($user->email)
-                    ->send(new SendWelcomeUser($user));
-            }
+
 
             return $user;
         } catch (\Exception $exception) {

@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -9,15 +10,19 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class SendWelcomeUser extends Mailable
 {
     use Queueable, SerializesModels;
     public $user;
+    public $plan;
 
-    public function __construct(User $user)
+
+    public function __construct(User $user, Plan $plan)
     {
         $this->user = $user;
+        $this->plan = $plan;
     }
 
     public function envelope(): Envelope
@@ -30,7 +35,7 @@ class SendWelcomeUser extends Mailable
     public function content(): Content
     {
         return new Content(
-            html: 'mails.welcomeTemplate',
+            html: 'emails.welcomeTemplate',
         );
     }
 
