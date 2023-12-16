@@ -6,6 +6,7 @@ use App\Models\Students;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class StudentsController extends Controller
@@ -41,22 +42,23 @@ class StudentsController extends Controller
             $user = User::find($student->user_id);
 
             return $student;
-
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
 
 
-
     public function index(Request $request)
     {
-
         try {
-            // pesquisa geral - nome, cpf e email
-            $filter = $request->query();
 
-            $students = Students::query()
+            $authenticatedUser = Auth::user();
+
+            if (!$authenticatedUser) {
+                return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
+            }
+
+            $students = $authenticatedUser->students()
                 ->select(
                     'id',
                     'name',
@@ -70,9 +72,11 @@ class StudentsController extends Controller
                     'neighborhood',
                     'city',
                     'number'
-
                 );
 
+            $students->where('user_id', $authenticatedUser->id);
+
+            $filter = $request->query();
             if ($request->has('name') && !empty($filter['name'])) {
                 $students->where('name', 'ilike', '%' . $filter['name'] . '%');
             }
@@ -83,11 +87,12 @@ class StudentsController extends Controller
                 $students->where('email', 'ilike', '%' . $filter['email'] . '%');
             }
 
-            $columnOrder = $request->has('order') && !empty($filter['order']) ?  $filter['order'] : 'name';
+            $columnOrder = $request->has('order') && !empty($filter['order']) ? $filter['order'] : 'name';
 
             return $students->orderBy($columnOrder)->get();
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
+
 }

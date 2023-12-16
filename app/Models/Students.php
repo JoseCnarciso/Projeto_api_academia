@@ -28,4 +28,6 @@ class Students extends Model
         "created_at",
 
     ];
+
+
 }
