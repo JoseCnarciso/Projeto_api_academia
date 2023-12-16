@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Exercises;
+use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +29,7 @@ class ExerciseController extends Controller
 
 
             $exercise = Exercises::create($data);
+            $user = User::find($exercise->user_id);
 
             return $exercise;
         }catch (\Exception $exception) {
