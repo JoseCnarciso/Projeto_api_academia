@@ -94,6 +94,54 @@ class StudentsController extends Controller
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
+
+    public function update($id, Request $request)
+    {
+        try {
+            $authenticatedUser = Auth::user();
+
+            if (!$authenticatedUser) {
+                return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
+            }
+
+            $student = Students::find($id);
+
+            if (!$student) {
+                return $this->error('Estudante não encontrado', Response::HTTP_NOT_FOUND);
+            }
+
+            $data = $request->validate([
+                'name' => 'string|required|max:255',
+                'email' => 'email|required|max:255',
+                'date_birth' => 'date|required',
+                'cpf' => 'string|required|max:14',
+                'contact' => 'string|required|max:20',
+                'city' => 'string|required|max:50',
+                'neighborhood' => 'string|required|max:50',
+                'number' => 'string|required|max:30',
+                'street' => 'string|required|max:30',
+                'state' => 'string|required|max:2',
+                'cep' => 'string|required|max:20',
+            ]);
+
+            if (Students::where('email', $data['email'])->where('id', '<>', $id)->exists()) {
+                return $this->error('Email já cadastrado', Response::HTTP_CONFLICT);
+            }
+
+            if (Students::where('cpf', $data['cpf'])->where('id', '<>', $id)->exists()) {
+                return $this->error('CPF já cadastrado', Response::HTTP_CONFLICT);
+            }
+
+            $student->update($data);
+
+            return $student;
+        } catch (\Exception $exception) {
+            return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+
+
     public function destroy($id)
 
     {
