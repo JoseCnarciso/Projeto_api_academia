@@ -11,6 +11,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // rotas privadas
     Route::post('students', [StudentsController::class, 'store']);
     Route::get('students', [StudentsController::class, 'index']);
+    Route::delete('students/{id}', [StudentsController::class, 'destroy']);
 
     Route::get('exercises', [ExerciseController::class, 'index']);
     Route::post('exercises', [ExerciseController::class, 'store']);

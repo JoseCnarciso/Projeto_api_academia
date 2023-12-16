@@ -94,5 +94,22 @@ class StudentsController extends Controller
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
+    public function destroy($id)
+
+    {
+        $student = Students::find($id);
+
+        if (!$student) return $this->error('ID não encontrado', Response::HTTP_NOT_FOUND);
+
+        $authenticatedUserId = Auth::id();
+
+        if ($student->user_id !== $authenticatedUserId) {
+            return $this->error('Você não tem permissão para excluir este exercício', Response::HTTP_FORBIDDEN);
+        }
+
+        $student->delete();
+
+        return $this->response('', Response::HTTP_NO_CONTENT);
+    }
 
 }
