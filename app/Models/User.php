@@ -36,7 +36,7 @@ class User extends Authenticatable
         'remember_token',
         "updated_at",
         "created_at",
-        "remember_token"
+
     ];
 
     /**
