@@ -94,7 +94,6 @@ class StudentsController extends Controller
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
-
     public function update($id, Request $request)
     {
         try {
@@ -108,6 +107,11 @@ class StudentsController extends Controller
 
             if (!$student) {
                 return $this->error('Estudante não encontrado', Response::HTTP_NOT_FOUND);
+            }
+
+            // Verifica se o usuário logado é o mesmo que cadastrou o estudante
+            if ($student->user_id !== $authenticatedUser->id) {
+                return $this->error('Não autorizado a atualizar este estudante', Response::HTTP_FORBIDDEN);
             }
 
             $data = $request->validate([
@@ -139,7 +143,6 @@ class StudentsController extends Controller
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
-
 
 
     public function destroy($id)
