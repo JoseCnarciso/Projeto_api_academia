@@ -21,7 +21,7 @@ class DashboardController extends Controller
 
             // Conta a quantidade de planos que tem no id
             $amountPlans = Plan::where('user_id', 1)->count();
-            $amountExercises = Exercises::where('user_id',133)->count();
+            $amountExercises = Exercises::where('user_id',1)->count();
 
             return [
                 'amountPlans' => $amountPlans,
