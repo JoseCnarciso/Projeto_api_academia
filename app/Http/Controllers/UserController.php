@@ -28,7 +28,8 @@ class UserController extends Controller
                 'password' => 'string|required|min:8|max:32',
                 'plan_id' => 'required|integer',
                 'cpf' => 'string|required|min:14|max:14',
-                'date_birth' => 'date|required'
+                'date_birth' => 'date|required',
+
             ]);
 
             if (User::where('email', $data['email'])->exists()) {

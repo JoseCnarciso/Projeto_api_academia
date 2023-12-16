@@ -23,7 +23,7 @@ class User extends Authenticatable
         'date_birth',
         'cpf',
         'password',
-        'plan_id',
+        'plan_id'
        ];
 
     /**
@@ -35,7 +35,8 @@ class User extends Authenticatable
         'password',
         'remember_token',
         "updated_at",
-        "created_at"
+        "created_at",
+        "remember_token"
     ];
 
     /**
