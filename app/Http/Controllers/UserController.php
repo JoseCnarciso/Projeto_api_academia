@@ -19,7 +19,6 @@ class UserController extends Controller
     {
 
         try {
-
             $data = $request->all();
 
             $request->validate([

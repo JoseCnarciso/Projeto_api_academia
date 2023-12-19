@@ -11,31 +11,38 @@ use Symfony\Component\HttpFoundation\Response;
 
 class StudentsController extends Controller
 {
-
     use HttpResponses;
     public function store(Request $request)
     {
         try {
+
+            $authenticatedUserId = $request->user()->id;
+
             $data = $request->validate([
                 'name' => 'string|required|max:255',
                 'email' => 'email|required|max:255',
-                'date_birth' => 'date|required',
-                'cpf' => 'string|required|max:14',
-                'contact' => 'string|required|max:20',
+                'date_birth' => 'string|required|date_format:Y-m-d',
+                'cpf' => 'string|required|regex:/^\d{3}\.\d{3}\.\d{3}-\d{2}$/',
+                'contact' => 'string|required|max:20|regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/',
                 'user_id' => 'required|integer',
-                'city' => 'string|required|max:50',
-                'neighborhood' => 'string|required|max:50',
-                'number' => 'string|required|max:30',
-                'street' => 'string|required|max:30',
-                'state' => 'string|required|max:2',
-                'cep' => 'string|required|max:20',
+                'city' => 'string|max:50',
+                'neighborhood' => 'string|max:50',
+                'number' => 'string|max:30',
+                'street' => 'string|max:30',
+                'state' => 'string|max:2',
+                'cep' => 'string|required|regex:/^\d{5}-\d{3}$/|max:20',
             ]);
+
+
+            if ($data['user_id'] !== $authenticatedUserId) {
+                return $this->error('O usuário logado não corresponde ao user_id fornecido', Response::HTTP_FORBIDDEN);
+            }
 
             if (Students::where('email', $data['email'])->exists()) {
                 return $this->error('Email já cadastrado', Response::HTTP_CONFLICT);
             }
             if (Students::where('cpf', $data['cpf'])->exists()) {
-                return $this->error('cpf já cadastrado', Response::HTTP_CONFLICT);
+                return $this->error('CPF já cadastrado', Response::HTTP_CONFLICT);
             }
 
             $student = Students::create($data);
@@ -87,16 +94,18 @@ class StudentsController extends Controller
                 $students->where('email', 'ilike', '%' . $filter['email'] . '%');
             }
 
-            $columnOrder = $request->has('order') && !empty($filter['order']) ? $filter['order'] : 'name';
+            $columnOrder = $request->has('order') && !empty($filter['order']) ? $filter['order'] : 'id';
 
             return $students->orderBy($columnOrder)->get();
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
+
     public function update($id, Request $request)
     {
         try {
+
             $authenticatedUser = Auth::user();
 
             if (!$authenticatedUser) {
@@ -109,41 +118,32 @@ class StudentsController extends Controller
                 return $this->error('Estudante não encontrado', Response::HTTP_NOT_FOUND);
             }
 
-            // Verifica se o usuário logado é o mesmo que cadastrou o estudante
             if ($student->user_id !== $authenticatedUser->id) {
                 return $this->error('Não autorizado a atualizar este estudante', Response::HTTP_FORBIDDEN);
             }
 
-            $data = $request->validate([
-                'name' => 'string|required|max:255',
-                'email' => 'email|required|max:255',
-                'date_birth' => 'date|required',
-                'cpf' => 'string|required|max:14',
-                'contact' => 'string|required|max:20',
-                'city' => 'string|required|max:50',
-                'neighborhood' => 'string|required|max:50',
-                'number' => 'string|required|max:30',
-                'street' => 'string|required|max:30',
-                'state' => 'string|required|max:2',
-                'cep' => 'string|required|max:20',
+            $data = $request->only([
+                'name' => 'string|max:255',
+                'email' => 'email|max:255',
+                'date_birth' => 'string|date_format:Y-m-d',
+                'cpf' => 'string|regex:/^\d{3}\.\d{3}\.\d{3}-\d{2}$/',
+                'contact' => 'string|max:20|regex:/^\([1-9]{2}\) 9[0-9]{4}-[0-9]{4}$/',
+                'user_id' => 'integer',
+                'city' => 'string|max:50',
+                'neighborhood' => 'string|max:50',
+                'number' => 'string|max:30',
+                'street' => 'string|max:30',
+                'state' => 'string|max:2',
+                'cep' => 'string|regex:/^\d{5}-\d{3}$/|max:20',
             ]);
-
-            if (Students::where('email', $data['email'])->where('id', '<>', $id)->exists()) {
-                return $this->error('Email já cadastrado', Response::HTTP_CONFLICT);
-            }
-
-            if (Students::where('cpf', $data['cpf'])->where('id', '<>', $id)->exists()) {
-                return $this->error('CPF já cadastrado', Response::HTTP_CONFLICT);
-            }
 
             $student->update($data);
 
-            return $student;
+            return $this->response('Estudante atualizado com sucesso', 200, $student);
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
-
 
     public function destroy($id)
 
@@ -162,5 +162,4 @@ class StudentsController extends Controller
 
         return $this->response('', Response::HTTP_NO_CONTENT);
     }
-
 }
