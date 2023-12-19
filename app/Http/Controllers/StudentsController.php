@@ -134,7 +134,7 @@ class StudentsController extends Controller
                 'number' => 'string|max:30',
                 'street' => 'string|max:30',
                 'state' => 'string|max:2',
-                'cep' => 'string|regex:/^\d{5}-\d{3}$/|max:20',
+                'cep' => 'string|regex:/^\d{5}-\d{3}$/|max:20'
             ]);
 
             $student->update($data);
@@ -144,6 +144,29 @@ class StudentsController extends Controller
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
+
+    public function show($id)
+{
+    try {
+        $authenticatedUser = Auth::user();
+
+        if (!$authenticatedUser) {
+            return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
+        }
+
+        $student = Students::find($id);
+
+        if (!$student) {
+            return $this->error('Estudante não encontrado', Response::HTTP_NOT_FOUND);
+        }
+
+        return $student;
+
+    } catch (\Exception $exception) {
+        return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+    }
+}
+
 
     public function destroy($id)
 
