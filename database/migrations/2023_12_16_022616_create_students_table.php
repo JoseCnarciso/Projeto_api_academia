@@ -18,12 +18,12 @@ return new class extends Migration
             $table->date('date_birth')->required();
             $table->string('cpf',14)->required()->unique();
             $table->string('contact',20)->required();
-            $table->string('city',50)->required();
-            $table->string('neighborhood',50)->required();
-            $table->string('number',30)->required();
-            $table->string('street',30)->required();
-            $table->string('state',2)->required();
-            $table->string('cep',20)->required();
+            $table->string('city',50)->nullable();
+            $table->string('neighborhood',50)->nullable();
+            $table->string('number',30)->nullable();
+            $table->string('street',30)->nullable();
+            $table->string('state',2)->nullable();
+            $table->string('cep',20)->nullable();
             $table->timestamps();
         });
     }
