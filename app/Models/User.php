@@ -24,7 +24,7 @@ class User extends Authenticatable
         'cpf',
         'password',
         'plan_id'
-       ];
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -51,5 +51,10 @@ class User extends Authenticatable
     public function students()
     {
         return $this->hasMany(Students::class);
+    }
+
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class);
     }
 }

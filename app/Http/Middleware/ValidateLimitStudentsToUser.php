@@ -36,7 +36,7 @@ class ValidateLimitStudentsToUser
     return $next($request);
 }
 
-    private function getMaxStudentsByPlanId($planId)
+    public function getMaxStudentsByPlanId($planId)
     {
 
         switch ($planId) {

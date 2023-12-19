@@ -7,25 +7,36 @@ use App\Models\Plan;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Middleware\ValidateLimitStudentsToUser;
+use App\Models\Students;
 
 class DashboardController extends Controller
 {
     use HttpResponses;
-
-    public function index(Request $request)
+    public function index(Request $request, ValidateLimitStudentsToUser $limitValidator)
     {
         try {
+            $authenticatedUser = Auth::user();
 
+            if (!$authenticatedUser) {
+                return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
+            }
 
+            $userPlan = $authenticatedUser->plan;
 
-            // Conta a quantidade de planos que tem no id
-            $amountPlans = Plan::where('user_id', 1)->count();
-            $amountExercises = Exercises::where('user_id',1)->count();
+            $amountExercises = Exercises::where('user_id', $authenticatedUser->id)->count();
+            $amountStudents = Students::where('user_id', $authenticatedUser->id)->count();
+
+            $maxStudents = $limitValidator->getMaxStudentsByPlanId($userPlan->id);
+            $remainingStudents = max(0, $maxStudents - $amountStudents);
 
             return [
-                'amountPlans' => $amountPlans,
-                'amountExercises' => $amountExercises
+                'registered_students' => $amountStudents,
+                'registered_exercises' => $amountExercises,
+                'current_user_plan' => "PLANO " . $userPlan->description,
+                'remaining_students' => $remainingStudents,
             ];
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);

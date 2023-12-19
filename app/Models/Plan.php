@@ -11,10 +11,15 @@ class Plan extends Model
     protected $fillable = [
         'description',
         'limit',
-       ];
+    ];
 
-       protected $hidden = [
+    protected $hidden = [
         "updated_at",
         "created_at"
     ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }
