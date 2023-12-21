@@ -7,7 +7,6 @@ use App\Models\Plan;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -42,8 +41,6 @@ class UserController extends Controller
             $plan = Plan::find($user->plan_id);
 
             Mail::to($user->email, $user->name)->send(new SendWelcomeUser($user, $plan));
-
-
 
             return $user;
         } catch (\Exception $exception) {

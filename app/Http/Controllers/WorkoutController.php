@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Exercises;
-use App\Models\Students;
+use App\Models\Student;
 use App\Models\Workout;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
@@ -31,8 +31,7 @@ class WorkoutController extends Controller
                 'time' => 'required|integer',
             ]);
 
-
-            $studentExists = Students::find($data['student_id']);
+            $studentExists = Student::find($data['student_id']);
             $exerciseExists = Exercises::find($data['exercise_id']);
 
             if (!$studentExists) {

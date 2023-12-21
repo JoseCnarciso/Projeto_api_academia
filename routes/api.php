@@ -7,7 +7,6 @@ use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkoutController;
 use App\Http\Middleware\ValidateLimitStudentsToUser;
-use App\Models\Workout;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -16,17 +15,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('students', [StudentsController::class, 'index']);
     Route::delete('students/{id}', [StudentsController::class, 'destroy']);
     Route::get('students/{id}', [StudentsController::class, 'show']);
-
+    Route::get('/students/{id}/workouts', [StudentsController::class, 'showWorkoutsStudents']);
     Route::post('workouts', [WorkoutController::class, 'store']);
-
 
     Route::put('students/{id}', [StudentsController::class, 'update']);
 
     Route::get('exercises', [ExerciseController::class, 'index']);
     Route::post('exercises', [ExerciseController::class, 'store']);
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('dashboard', [DashboardController::class, 'index']);
 });
-Route::get('dashboard', [DashboardController::class, 'index']);
 
 Route::post('users', [UserController::class, 'store']);
 Route::post('login', [AuthController::class, 'store']);

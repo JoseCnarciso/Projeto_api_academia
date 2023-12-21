@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Middleware\ValidateLimitStudentsToUser;
-use App\Models\Students;
+use App\Models\Student;
+use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
@@ -25,21 +26,25 @@ class DashboardController extends Controller
             }
 
             $userPlan = $authenticatedUser->plan;
-
             $amountExercises = Exercises::where('user_id', $authenticatedUser->id)->count();
-            $amountStudents = Students::where('user_id', $authenticatedUser->id)->count();
+            $amountStudents = Student::where('user_id', $authenticatedUser->id)->count();
 
             $maxStudents = $limitValidator->getMaxStudentsByPlanId($userPlan->id);
             $remainingStudents = max(0, $maxStudents - $amountStudents);
 
-            return [
+            $response = [
                 'registered_students' => $amountStudents,
                 'registered_exercises' => $amountExercises,
                 'current_user_plan' => "PLANO " . $userPlan->description,
                 'remaining_students' => $remainingStudents,
             ];
+
+            return $response;
         } catch (\Exception $exception) {
+            Log::error($exception);
+
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
+
 }

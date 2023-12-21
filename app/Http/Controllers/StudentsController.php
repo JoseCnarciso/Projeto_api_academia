@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Students;
+use App\Models\Student;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
@@ -38,14 +38,14 @@ class StudentsController extends Controller
                 return $this->error('O usuário logado não corresponde ao user_id fornecido', Response::HTTP_FORBIDDEN);
             }
 
-            if (Students::where('email', $data['email'])->exists()) {
+            if (Student::where('email', $data['email'])->exists()) {
                 return $this->error('Email já cadastrado', Response::HTTP_CONFLICT);
             }
-            if (Students::where('cpf', $data['cpf'])->exists()) {
+            if (Student::where('cpf', $data['cpf'])->exists()) {
                 return $this->error('CPF já cadastrado', Response::HTTP_CONFLICT);
             }
 
-            $student = Students::create($data);
+            $student = Student::create($data);
             $user = User::find($student->user_id);
 
             return $student;
@@ -54,18 +54,17 @@ class StudentsController extends Controller
         }
     }
 
-
     public function index(Request $request)
     {
         try {
 
-            $authenticatedUser = Auth::user();
-
-            if (!$authenticatedUser) {
+            if (!Auth::check()) {
                 return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
             }
 
-            $students = $authenticatedUser->students()
+            $authenticatedUserId = Auth::user()->id;
+
+            $students = Student::where('user_id', $authenticatedUserId)
                 ->select(
                     'id',
                     'name',
@@ -80,8 +79,6 @@ class StudentsController extends Controller
                     'city',
                     'number'
                 );
-
-            $students->where('user_id', $authenticatedUser->id);
 
             $filter = $request->query();
             if ($request->has('name') && !empty($filter['name'])) {
@@ -106,19 +103,19 @@ class StudentsController extends Controller
     {
         try {
 
-            $authenticatedUser = Auth::user();
+            $authenticatedUserId = Auth::user()->id;
 
-            if (!$authenticatedUser) {
+            if (!$authenticatedUserId) {
                 return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
             }
 
-            $student = Students::find($id);
+            $student = Student::find($id);
 
             if (!$student) {
                 return $this->error('Estudante não encontrado', Response::HTTP_NOT_FOUND);
             }
 
-            if ($student->user_id !== $authenticatedUser->id) {
+            if ($student->user_id !== $authenticatedUserId->id) {
                 return $this->error('Não autorizado a atualizar este estudante', Response::HTTP_FORBIDDEN);
             }
 
@@ -145,33 +142,84 @@ class StudentsController extends Controller
         }
     }
 
-    public function show($id)
-{
-    try {
-        $authenticatedUser = Auth::user();
+    public function show(Request $request, $id = null)
+    {
+        try {
+            $authenticatedUserId = Auth::user()->id;
 
-        if (!$authenticatedUser) {
-            return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
+            if (!$authenticatedUserId) {
+                return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
+            }
+
+            if ($id) {
+                $student = Student::where('user_id', $authenticatedUserId)->find($id);
+
+                if (!$student) {
+                    return $this->error('Estudante não encontrado', Response::HTTP_NOT_FOUND);
+                }
+            } else {
+                $student = Student::where('user_id', $authenticatedUserId)->first();
+
+                if (!$student) {
+                    return $this->error('Estudante não encontrado', Response::HTTP_NOT_FOUND);
+                }
+            }
+
+            return $student;
+        } catch (\Exception $exception) {
+            return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
-
-        $student = Students::find($id);
-
-        if (!$student) {
-            return $this->error('Estudante não encontrado', Response::HTTP_NOT_FOUND);
-        }
-
-        return $student;
-
-    } catch (\Exception $exception) {
-        return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
     }
-}
 
+    public function showWorkoutsStudents($id)
+    {
+        try {
+            $authenticatedUserId = Auth::user()->id;
+
+            if (!$authenticatedUserId) {
+                return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
+            }
+
+            $student = Student::where('user_id', $authenticatedUserId)->findOrFail($id);
+
+            $organizedWorkouts = [];
+            $daysOfWeek = ['SEGUNDA', 'TERÇA', 'QUARTA', 'QUINTA', 'SEXTA', 'SABADO', 'DOMINGO'];
+
+            foreach ($daysOfWeek as $day) {
+                $workouts = $student->workouts()
+                    ->where('day', $day)
+                    ->join('exercises', 'workouts.exercise_id', '=', 'exercises.id')
+                    ->select('exercises.description', 'workouts.*')
+                    ->get();
+
+                $organizedWorkouts[$day] = $workouts->map(function ($workout) {
+                    return [
+                        'exercise_description' => $workout->description,
+                        'repetitions' => $workout->repetitions,
+                        'weight' => $workout->weight,
+                        'break_time' => $workout->break_time,
+                        'observations' => $workout->observations,
+                        'time' => $workout->time,
+                    ];
+                })->toArray();
+            }
+
+            $response = [
+                'student_id' => $student->id,
+                'student_name' => $student->name,
+                'workouts' => $organizedWorkouts,
+            ];
+
+            return $response;
+        } catch (\Exception $exception) {
+            return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
+    }
 
     public function destroy($id)
 
     {
-        $student = Students::find($id);
+        $student = Student::find($id);
 
         if (!$student) return $this->error('ID não encontrado', Response::HTTP_NOT_FOUND);
 
