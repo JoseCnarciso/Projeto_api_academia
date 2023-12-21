@@ -13,14 +13,13 @@ class Workout extends Model
         'name',
         'student_id',
         'exercise_id',
-        'repetetions',
+        'repetitions',
         'weight',
         'break_time',
         'day',
         'observations',
         'time'
     ];
-
     protected $hidden = [
         "updated_at",
         "created_at",

@@ -14,12 +14,13 @@ return new class extends Migration
             $table->unsignedBigInteger('student_id')->required();
             $table->unsignedBigInteger('exercise_id')->required();
             $table->integer('repetitions')->required();
-            $table->float('weight')->required();
+            $table->decimal('weight')->required();
             $table->integer('break_time')->required();
-            $table->enum('day', ['SEGUNDA', 'TERÇA', 'QUARTA', 'QUINTA', 'SEXTA', 'SABADO', 'DOMINGO'])->default('SEGUNDA');
-            $table->text('observations')->required();
+            $table->enum('day', ['SEGUNDA', 'TERÇA', 'QUARTA', 'QUINTA', 'SEXTA', 'SABADO', 'DOMINGO']);
+            $table->longText('observations')->nullable();
             $table->integer('time')->required();
             $table->timestamps();
+
             $table->foreign('student_id')->references('id')->on('students');
             $table->foreign('exercise_id')->references('id')->on('exercises');
         });

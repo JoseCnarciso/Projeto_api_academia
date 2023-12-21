@@ -21,13 +21,16 @@ class WorkoutController extends Controller
             }
 
             $data = $request->validate([
-                'student_id' => 'required|integer|exists:students,id',
-                'exercise_id' => 'required|integer|exists:exercises,id',
-                'repetitions' => 'integer|required',
-                'weight' => 'float|required',
-                'break_time' => 'integer|required',
-                'day' => 'string|required'
+                'student_id' => 'required|exists:students,id',
+                'exercise_id' => 'required|exists:exercises,id',
+                'repetitions' => 'required|integer|gt:0',
+                'weight' => 'required|numeric',
+                'break_time' => 'required|integer',
+                'day' => 'in:SEGUNDA,TERÇA,QUARTA,QUINTA,SEXTA,SABADO,DOMINGO',
+                'observations' => 'nullable|string',
+                'time' => 'required|integer',
             ]);
+
 
             $studentExists = Students::find($data['student_id']);
             $exerciseExists = Exercises::find($data['exercise_id']);
