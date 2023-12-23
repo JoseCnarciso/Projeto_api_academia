@@ -26,7 +26,6 @@ class DashboardController extends Controller
 
             $authenticatedUser = Auth::user();
 
-
             $userPlan = $authenticatedUser->plan;
             $amountExercises = Exercises::where('user_id', $authenticatedUser->id)->count();
             $amountStudents = Student::where('user_id', $authenticatedUser->id)->count();
@@ -42,8 +41,8 @@ class DashboardController extends Controller
             ];
 
             return $response;
+
         } catch (\Exception $exception) {
-            Log::error($exception);
 
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }

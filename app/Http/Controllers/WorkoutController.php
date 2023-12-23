@@ -18,6 +18,7 @@ class WorkoutController extends Controller
         try {
 
             if (!Auth::check()) {
+
                 return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
             }
 
@@ -37,10 +38,12 @@ class WorkoutController extends Controller
             $studentExists = Student::find($data['student_id']);
 
             if (!$studentExists) {
+
                 return $this->error('Estudante não encontrado', Response::HTTP_BAD_REQUEST);
             }
 
             if ($studentExists->user_id !== $authenticatedUserId) {
+
                 return $this->error('Usuário não autorizado para cadastrar treinos para este aluno', Response::HTTP_UNAUTHORIZED);
             }
 
@@ -48,10 +51,12 @@ class WorkoutController extends Controller
             $exerciseExists = Exercises::find($data['exercise_id']);
 
             if (!$exerciseExists) {
+
                 return $this->error('Exercício não encontrado', Response::HTTP_BAD_REQUEST);
             }
 
             if ($exerciseExists->user_id !== $authenticatedUserId) {
+
                 return $this->error('Usuário não autorizado para cadastrar treinos com este exercício', Response::HTTP_UNAUTHORIZED);
             }
 
@@ -61,6 +66,7 @@ class WorkoutController extends Controller
                 ->count();
 
             if ($existingWorkouts > 0) {
+
                 return $this->error('Este exercício já foi cadastrado para o estudante neste dia', Response::HTTP_CONFLICT);
             }
 
@@ -69,6 +75,7 @@ class WorkoutController extends Controller
                 ->count();
 
             if ($totalWorkoutsForDay >= 12) {
+
                 return $this->error('Limite de 12 exercícios atingido para o dia selecionado', Response::HTTP_CONFLICT);
             }
 
@@ -93,6 +100,7 @@ class WorkoutController extends Controller
             );
 
         } catch (\Exception $exception) {
+
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }

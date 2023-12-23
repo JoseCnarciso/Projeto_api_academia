@@ -55,6 +55,7 @@ class ExerciseController extends Controller
     {
         try {
             if (!Auth::check()) {
+
                 return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
             }
 
@@ -73,7 +74,9 @@ class ExerciseController extends Controller
             $columnOrder = $request->has('order') ? $request->query('order') : 'id';
 
             return $exercises->orderBy($columnOrder)->get();
+
         } catch (\Exception $exception) {
+
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
@@ -83,6 +86,7 @@ class ExerciseController extends Controller
 
     {
         if (!Auth::check()) {
+
             return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
         }
 

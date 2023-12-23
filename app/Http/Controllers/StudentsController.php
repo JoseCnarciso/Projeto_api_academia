@@ -17,6 +17,7 @@ class StudentsController extends Controller
         try {
 
             if (!Auth::check()) {
+
                 return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
             }
 
@@ -52,9 +53,10 @@ class StudentsController extends Controller
             $student = Student::create($data);
             $user = User::find($student->user_id);
 
-            return $student;
+            return $this->response('Aluno cadastrado com sucesso', Response::HTTP_CREATED, $student);
 
         } catch (\Exception $exception) {
+
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
@@ -63,6 +65,7 @@ class StudentsController extends Controller
         try {
 
             if (!Auth::check()) {
+
                 return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
             }
 
@@ -99,6 +102,7 @@ class StudentsController extends Controller
 
             return $students->orderBy($columnOrder)->get();
         } catch (\Exception $exception) {
+
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
@@ -117,10 +121,12 @@ class StudentsController extends Controller
             $student = Student::find($id);
 
             if (!$student) {
+
                 return $this->error('Estudante não encontrado', Response::HTTP_NOT_FOUND);
             }
 
             if ($student->user_id !== $authenticatedUserId) {
+
                 return $this->error('Usuário não autorizado a atualizar este estudante', Response::HTTP_UNAUTHORIZED);
             }
 
@@ -151,13 +157,16 @@ class StudentsController extends Controller
                 ->first();
 
             if ($existingStudent) {
+
                 return $this->error('Aluno com o mesmo CPF já cadastrado', Response::HTTP_CONFLICT);
             }
 
             $student->update($data);
 
-            return $this->response('Estudante atualizado com sucesso', 200, $student);
+            return $this->response('Aluno atualizado com sucesso', Response::HTTP_OK, $student);
+
         } catch (\Exception $exception) {
+
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
@@ -167,27 +176,33 @@ class StudentsController extends Controller
     {
         try {
             if (!Auth::check()) {
+
                 return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
             }
 
             $authenticatedUserId = Auth::user()->id;
 
             if ($id) {
+
                 $student = Student::where('user_id', $authenticatedUserId)->find($id);
 
                 if (!$student) {
+
                     return $this->error('Estudante não encontrado', Response::HTTP_NOT_FOUND);
                 }
             } else {
+
                 $student = Student::where('user_id', $authenticatedUserId)->first();
 
                 if (!$student) {
+
                     return $this->error('Estudante não encontrado', Response::HTTP_NOT_FOUND);
                 }
             }
 
             return $student;
         } catch (\Exception $exception) {
+
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
@@ -195,7 +210,9 @@ class StudentsController extends Controller
     public function showWorkoutsStudents($id)
     {
         try {
+
             if (!Auth::check()) {
+
                 return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
             }
 
@@ -207,6 +224,7 @@ class StudentsController extends Controller
             $daysOfWeek = ['SEGUNDA', 'TERÇA', 'QUARTA', 'QUINTA', 'SEXTA', 'SABADO', 'DOMINGO'];
 
             foreach ($daysOfWeek as $day) {
+
                 $workouts = $student->workouts()
                     ->where('day', $day)
                     ->join('exercises', 'workouts.exercise_id', '=', 'exercises.id')
@@ -233,6 +251,7 @@ class StudentsController extends Controller
 
             return $response;
         } catch (\Exception $exception) {
+
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
@@ -241,6 +260,7 @@ class StudentsController extends Controller
 
     {
         if (!Auth::check()) {
+
             return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
         }
 
@@ -251,6 +271,7 @@ class StudentsController extends Controller
         if (!$student) return $this->error('ID não encontrado', Response::HTTP_NOT_FOUND);
 
         if ($student->user_id !== $authenticatedUserId) {
+
             return $this->error('Você não tem permissão para excluir este estudante', Response::HTTP_FORBIDDEN);
         }
 
