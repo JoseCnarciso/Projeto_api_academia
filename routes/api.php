@@ -13,15 +13,17 @@ Route::middleware('auth:sanctum')->group(function () {
     // rotas privadas
     Route::post('students', [StudentsController::class, 'store'])->middleware(ValidateLimitStudentsToUser::class);
     Route::get('students', [StudentsController::class, 'index']);
+    Route::put('students/{id}', [StudentsController::class, 'update']);
     Route::delete('students/{id}', [StudentsController::class, 'destroy']);
     Route::get('students/{id}', [StudentsController::class, 'show']);
     Route::get('/students/{id}/workouts', [StudentsController::class, 'showWorkoutsStudents']);
     Route::post('workouts', [WorkoutController::class, 'store']);
 
-    Route::put('students/{id}', [StudentsController::class, 'update']);
 
     Route::get('exercises', [ExerciseController::class, 'index']);
     Route::post('exercises', [ExerciseController::class, 'store']);
+    Route::delete('exercises/{id}', [ExerciseController::class, 'destroy']);
+
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('dashboard', [DashboardController::class, 'index']);
 });

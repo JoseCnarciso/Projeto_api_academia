@@ -16,7 +16,11 @@ class StudentsController extends Controller
     {
         try {
 
-            $authenticatedUserId = $request->user()->id;
+            if (!Auth::check()) {
+                return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
+            }
+
+            $authenticatedUserId = Auth::user()->id;
 
             $data = $request->validate([
                 'name' => 'string|required|max:255',
@@ -49,11 +53,11 @@ class StudentsController extends Controller
             $user = User::find($student->user_id);
 
             return $student;
+
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
-
     public function index(Request $request)
     {
         try {
@@ -99,15 +103,16 @@ class StudentsController extends Controller
         }
     }
 
+
     public function update($id, Request $request)
     {
         try {
 
-            $authenticatedUserId = Auth::user()->id;
-
-            if (!$authenticatedUserId) {
+            if (!Auth::check()) {
                 return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
             }
+
+            $authenticatedUserId = Auth::user()->id;
 
             $student = Student::find($id);
 
@@ -115,24 +120,39 @@ class StudentsController extends Controller
                 return $this->error('Estudante não encontrado', Response::HTTP_NOT_FOUND);
             }
 
-            if ($student->user_id !== $authenticatedUserId->id) {
-                return $this->error('Não autorizado a atualizar este estudante', Response::HTTP_FORBIDDEN);
+            if ($student->user_id !== $authenticatedUserId) {
+                return $this->error('Usuário não autorizado a atualizar este estudante', Response::HTTP_UNAUTHORIZED);
             }
 
-            $data = $request->only([
+            $data = $request->validate([
                 'name' => 'string|max:255',
                 'email' => 'email|max:255',
                 'date_birth' => 'string|date_format:Y-m-d',
                 'cpf' => 'string|regex:/^\d{3}\.\d{3}\.\d{3}-\d{2}$/',
-                'contact' => 'string|max:20|regex:/^\([1-9]{2}\) 9[0-9]{4}-[0-9]{4}$/',
-                'user_id' => 'integer',
+                'contact' => 'string|max:20|regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/',
                 'city' => 'string|max:50',
                 'neighborhood' => 'string|max:50',
                 'number' => 'string|max:30',
                 'street' => 'string|max:30',
                 'state' => 'string|max:2',
-                'cep' => 'string|regex:/^\d{5}-\d{3}$/|max:20'
+                'cep' => 'string|required|regex:/^\d{5}-\d{3}$/|max:20',
             ]);
+
+            $existingStudentWithEmail = Student::where('email', $data['email'])
+                ->where('id', '!=', $id)
+                ->first();
+
+            if ($existingStudentWithEmail) {
+                return $this->error('Aluno com o mesmo e-mail já cadastrado', Response::HTTP_CONFLICT);
+            }
+
+            $existingStudent = Student::where('cpf', $data['cpf'])
+                ->where('id', '!=', $id)
+                ->first();
+
+            if ($existingStudent) {
+                return $this->error('Aluno com o mesmo CPF já cadastrado', Response::HTTP_CONFLICT);
+            }
 
             $student->update($data);
 
@@ -142,14 +162,15 @@ class StudentsController extends Controller
         }
     }
 
+
     public function show(Request $request, $id = null)
     {
         try {
-            $authenticatedUserId = Auth::user()->id;
-
-            if (!$authenticatedUserId) {
+            if (!Auth::check()) {
                 return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
             }
+
+            $authenticatedUserId = Auth::user()->id;
 
             if ($id) {
                 $student = Student::where('user_id', $authenticatedUserId)->find($id);
@@ -174,11 +195,11 @@ class StudentsController extends Controller
     public function showWorkoutsStudents($id)
     {
         try {
-            $authenticatedUserId = Auth::user()->id;
-
-            if (!$authenticatedUserId) {
+            if (!Auth::check()) {
                 return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
             }
+
+            $authenticatedUserId = Auth::user()->id;
 
             $student = Student::where('user_id', $authenticatedUserId)->findOrFail($id);
 
@@ -219,14 +240,18 @@ class StudentsController extends Controller
     public function destroy($id)
 
     {
+        if (!Auth::check()) {
+            return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
+        }
+
+        $authenticatedUserId = Auth::user()->id;
+
         $student = Student::find($id);
 
         if (!$student) return $this->error('ID não encontrado', Response::HTTP_NOT_FOUND);
 
-        $authenticatedUserId = Auth::id();
-
         if ($student->user_id !== $authenticatedUserId) {
-            return $this->error('Você não tem permissão para excluir este exercício', Response::HTTP_FORBIDDEN);
+            return $this->error('Você não tem permissão para excluir este estudante', Response::HTTP_FORBIDDEN);
         }
 
         $student->delete();
