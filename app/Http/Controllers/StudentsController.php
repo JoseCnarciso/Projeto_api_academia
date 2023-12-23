@@ -58,11 +58,11 @@ class StudentsController extends Controller
     {
         try {
 
-            if (!Auth::check()) {
+            $authenticatedUserId = Auth::user()->id;
+
+            if (!$authenticatedUserId) {
                 return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
             }
-
-            $authenticatedUserId = Auth::user()->id;
 
             $students = Student::where('user_id', $authenticatedUserId)
                 ->select(
@@ -142,7 +142,7 @@ class StudentsController extends Controller
         }
     }
 
-    public function show(Request $request, $id = null)
+    public function show(Request $request, $id)
     {
         try {
             $authenticatedUserId = Auth::user()->id;

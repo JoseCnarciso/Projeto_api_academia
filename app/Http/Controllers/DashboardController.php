@@ -41,7 +41,6 @@ class DashboardController extends Controller
 
             return $response;
         } catch (\Exception $exception) {
-            Log::error($exception);
 
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
