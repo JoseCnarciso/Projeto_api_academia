@@ -26,6 +26,7 @@ class DashboardController extends Controller
 
             $authenticatedUser = Auth::user();
 
+
             $userPlan = $authenticatedUser->plan;
             $amountExercises = Exercises::where('user_id', $authenticatedUser->id)->count();
             $amountStudents = Student::where('user_id', $authenticatedUser->id)->count();
@@ -37,7 +38,7 @@ class DashboardController extends Controller
                 'registered_students' => $amountStudents,
                 'registered_exercises' => $amountExercises,
                 'current_user_plan' => "PLANO " . $userPlan->description,
-                'remaining_students' => $remainingStudents,
+                'remaining_students' => ($maxStudents === PHP_INT_MAX) ? 'ILIMITADO' : max(0, (int)$maxStudents - $amountStudents)
             ];
 
             return $response;

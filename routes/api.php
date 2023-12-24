@@ -11,7 +11,7 @@ use App\Http\Middleware\ValidateLimitStudentsToUser;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
-    // rotas privadas
+
     Route::post('students', [StudentsController::class, 'store'])->middleware(ValidateLimitStudentsToUser::class);
 
     Route::get('students/export-Student-PDF', [ExportStudentPDFController::class, 'showPerfilStudentPdf']);
