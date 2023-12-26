@@ -297,10 +297,10 @@ Response
 
                                 Lista de exercícios para a semana
 
-Nome: SAMANTA
+            Nome: SAMANTA
 
 
- SEGUNDA
+         SEGUNDA
     - Não há treinos para este dia.
 
         TERÇA
