@@ -20,8 +20,11 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'date_birth',
+        'cpf',
         'password',
-    ];
+        'plan_id',
+       ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -31,6 +34,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        "updated_at",
+        "created_at"
     ];
 
     /**

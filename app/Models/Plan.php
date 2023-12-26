@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Plan extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'description',
+        'limit',
+       ];
+
+       protected $hidden = [
+        "updated_at",
+        "created_at"
+    ];
 }
