@@ -21,6 +21,34 @@
 
 ## Documentação da API
 
+
+
+## 🚀 Como executar o projeto
+
+-Clonar o repositório https://github.com/JoseCnarciso/Projeto_api_academia/
+
+-Criar uma base de dados no PostgreSQL com nome **api_academia**
+
+-Criar um arquivo .env na raiz do projeto com os seguintes parametros:
+```
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=api_academia
+DB_USERNAME=admin
+DB_PASSWORD=admin
+```
+
+-No prompt de comando executar :
+```sh
+composer install 
+```
+-Executar em seguida:
+```sh
+php artisan serve
+```
+
+
 ### 🚥 Endpoints - Rotas Usuário
 
 ##
