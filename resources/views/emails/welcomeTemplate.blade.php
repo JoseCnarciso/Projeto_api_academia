@@ -6,6 +6,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Bem-vindo ao CrossTrain!</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #3498db;
+        }
+
+        h3 {
+            color: #2ecc71;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        strong {
+            color: #e74c3c;
+        }
+
+        p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        footer {
+            color: #999;
+            font-size: 14px;
+        }
+    </style>
 </head>
 
 <body>
@@ -24,8 +65,7 @@
 
     <p>Obrigado por fazer parte da nossa comunidade!</p>
 
-    <p>Atenciosamente,<br>
-    A Equipe do CrossTrain</p>
+    <footer>Atenciosamente, A Equipe do CrossTrain</footer>
 </body>
 
 </html>

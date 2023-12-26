@@ -39,6 +39,7 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+            'hash' => false,
         ],
 
         'api' => [
@@ -100,7 +101,7 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => 'password_reset_tokens',
-            'expire' => 60,
+            'expire' => 1440,
             'throttle' => 60,
         ],
     ],
@@ -116,6 +117,6 @@ return [
     |
     */
 
-    'password_timeout' => 24,
+    'password_timeout' => 1440,
 
 ];
