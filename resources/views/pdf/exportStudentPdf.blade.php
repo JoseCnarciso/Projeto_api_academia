@@ -11,6 +11,7 @@
         body {
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
+            font-size: 8px;
             margin: 20px;
         }
 
@@ -32,9 +33,10 @@
         }
 
         th, td {
-            padding: 10px;
+            padding: 3px;
             border: 1px solid #ddd;
             text-align: center;
+            width: 8%;
         }
 
         th {
@@ -70,7 +72,7 @@
                         <th>Tempo de Descanso</th>
                         <th>Observações</th>
                         <th>Tempo</th>
-                        <th>Feito?</th>
+                        <th>Check</th>
                     </tr>
                 </thead>
                 <tbody>

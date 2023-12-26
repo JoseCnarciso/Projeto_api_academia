@@ -35,7 +35,7 @@ class StudentsController extends Controller
                 'number' => 'string|max:30',
                 'street' => 'string|max:30',
                 'state' => 'string|max:2',
-                'cep' => 'stringregex:/^\d{5}-\d{3}$/|max:20',
+                'cep' => 'regex:/^\d{5}-\d{3}$/|max:20',
             ]);
 
 
