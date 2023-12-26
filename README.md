@@ -1,22 +1,23 @@
-Nome do Software: FitManager
+Nome do Software: CrossTrain
 
 Introdução
-O FitManager surge como uma revolucionária solução de gerenciamento de treinos, projetada sob medida para atender às necessidades exclusivas de academias e profissionais
-de educação física. Neste artigo, exploraremos em detalhes como o FitManager se destaca na otimização do controle e acompanhamento dos treinos de alunos.
+O CrossTrain surge como uma revolucionária solução de gerenciamento de treinos, projetada sob medida para atender às necessidades exclusivas de academias e profissionais
+de educação física. Neste artigo, exploraremos em detalhes como o CrossTrain se destaca na otimização do controle e acompanhamento dos treinos de alunos.
 
 Descrição do Problema Resolvido
-O FitManager visa simplificar e aprimorar a gestão de treinos, fornecendo uma plataforma eficiente para o cadastro de exercícios, planos, alunos e seus respectivos treinos.
+O CrossTrain visa simplificar e aprimorar a gestão de treinos, fornecendo uma plataforma eficiente para o cadastro de exercícios, planos, alunos e seus respectivos treinos.
 A principal proposta é oferecer uma solução que não apenas organize informações, mas também proporcione uma visão clara do progresso individual de cada aluno.
 
 Técnicas e Tecnologias Utilizadas
-Laravel: A escolha do robusto framework PHP Laravel confere ao FitManager eficiência e confiabilidade.
+Laravel: A escolha do robusto framework PHP Laravel confere ao CrossTrain eficiência e confiabilidade.
 PostgreSQL: Como sistema de gerenciamento de banco de dados relacional, o PostgreSQL assegura uma manipulação eficaz dos dados.
 API REST: A implementação de uma API REST facilita a integração fluida entre o front-end e o back-end do sistema.
 DomPDF: A biblioteca DomPDF é utilizada para a geração de arquivos PDF, agregando valor à documentação do treino.
-Sanctum: Para autenticação via API, o FitManager utiliza Sanctum, garantindo segurança no acesso e manipulação de dados.
+Sanctum: Para autenticação via API, o CrossTrain utiliza Sanctum, garantindo segurança no acesso e manipulação de dados.
 Middleware: Implementado para validação e segurança em diversas operações, o uso de Middleware eleva a integridade do sistema.
+
 Estrutura do Projeto
-O FitManager estrutura-se em modelos essenciais, cada um desempenhando um papel vital no armazenamento e organização dos dados:
+O CrossTrain estrutura-se em modelos essenciais, cada um desempenhando um papel vital no armazenamento e organização dos dados:
 
 Exercise: Armazena dados específicos de exercícios.
 Plan: Registra informações sobre os planos de treino.
@@ -24,13 +25,13 @@ Student: Contém dados individuais de alunos.
 User: Responsável por armazenar dados de usuários do sistema.
 Workout: Centraliza informações relativas aos treinos.
 Utilização no Projeto
-Os modelos são a espinha dorsal do FitManager, proporcionando a estrutura necessária para o armazenamento de dados cruciais, incluindo exercícios, planos, alunos, usuários e treinos. Cada um desempenha um papel fundamental no funcionamento fluido do sistema, garantindo que as informações sejam armazenadas e acessadas de maneira eficiente.
+Os modelos são a espinha dorsal do CrossTrain, proporcionando a estrutura necessária para o armazenamento de dados cruciais, incluindo exercícios, planos, alunos, usuários e treinos. Cada um desempenha um papel fundamental no funcionamento fluido do sistema, garantindo que as informações sejam armazenadas e acessadas de maneira eficiente.
 
 Melhorando Dados Básicos
-Ao abordar a necessidade de melhorar os dados básicos, reconhecemos a importância de aprimorar a qualidade da informação. O FitManager oferece uma abordagem abrangente, capacitando academias a enriquecer os dados essenciais para um gerenciamento eficaz. As funcionalidades intuitivas e a interface amigável do FitManager tornam o processo de aprimoramento de dados simples e acessível.
+Ao abordar a necessidade de melhorar os dados básicos, reconhecemos a importância de aprimorar a qualidade da informação. O CrossTrain oferece uma abordagem abrangente, capacitando academias a enriquecer os dados essenciais para um gerenciamento eficaz. As funcionalidades intuitivas e a interface amigável do CrossTrain tornam o processo de aprimoramento de dados simples e acessível.
 
 Conclusão
-Em conclusão, o FitManager se destaca como uma poderosa ferramenta para academias que buscam otimizar o gerenciamento de treinos. Com uma combinação de tecnologias avançadas, uma estrutura de projeto sólida e um compromisso com a qualidade dos dados, o FitManager posiciona-se como líder no mercado. Ao adotar essa solução, academias podem não apenas melhorar seus dados básicos, mas também elevar a eficiência e a qualidade de seus serviços.
+Em conclusão, o CrossTrain se destaca como uma poderosa ferramenta para academias que buscam otimizar o gerenciamento de treinos. Com uma combinação de tecnologias avançadas, uma estrutura de projeto sólida e um compromisso com a qualidade dos dados, o CrossTrain posiciona-se como líder no mercado. Ao adotar essa solução, academias podem não apenas melhorar seus dados básicos, mas também elevar a eficiência e a qualidade de seus serviços.
 
 Como Executar o Projeto Laravel:
 
@@ -53,9 +54,9 @@ Execute as seeders do banco de dados: php artisan db:seed PolupatePlans
 Inicie o servidor: php artisan serve
 A aplicação estará disponível em http://localhost:8000.
 
-Rotas da Aplicação - FitManager
+Rotas da Aplicação - CrossTrain
 
-Aqui estão as rotas detalhadas para as diversas operações disponíveis na aplicação FitManager.
+Aqui estão as rotas detalhadas para as diversas operações disponíveis na aplicação CrossTrain.
 
 UserController - Modelo de Requisição e Resposta
 
@@ -1000,6 +1001,6 @@ Implementar logs para rastrear ações e detectar problemas.
 Introduzir um sistema de backups regulares para garantir a segurança dos dados.
 
 Considerações Finais
-Esta documentação abrange as principais rotas e funcionalidades da aplicação FitManager, incluindo autenticação de usuário, cadastro, assinatura de plano e obtenção
+Esta documentação abrange as principais rotas e funcionalidades da aplicação CrossTrain, incluindo autenticação de usuário, cadastro, assinatura de plano e obtenção
 de informações de assinatura ativa. Certifique-se de ajustar as solicitações e os parâmetros conforme necessário para atender aos requisitos específicos do seu sistema.
 Consulte a documentação do Laravel para obter informações detalhadas sobre autenticação, middleware e outras funcionalidades do framework.
