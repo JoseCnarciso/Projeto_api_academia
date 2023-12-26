@@ -294,36 +294,36 @@ Request exemplo:
 Response
 
 `
+ Lista de exercícios para a semana
 
-                                Lista de exercícios para a semana
-
-            Nome: SAMANTA
+        Nome: SAMANTA
 
 
          SEGUNDA
-    - Não há treinos para este dia.
+    | Exercício | Repetições | Peso | Tempo de descanso | Observações | Tempo | Feito?
+    |  Esteira  |     10     |15.61 |        60         |     N/A     |    1  |  ☐
 
         TERÇA
-    - Não há treinos para este dia.
-        
+    | Exercício | Repetições | Peso | Tempo de descanso | Observações | Tempo | Feito?
+    |  Flexão   |     10     |15.61 |        60         |     N/A     |    1  |  ☐         
+    
         QUARTA
-    - Não há treinos para este dia.
+    | Exercício | Repetições | Peso | Tempo de descanso | Observações | Tempo | Feito?
+    |  Flexão   |     10     |15.61 |        60         |     N/A     |    1  |  ☐
+   
 
         QUINTA
-    - Exercício - Repetições - Peso - Tempo de descanso - Observações - Tempo - Feito?
-       Esteira  -     10     -15.61 -        60         -     N/A     -    1  -  ☐
-        
-        SEXTA        
-    - Exercício - Repetições - Peso - Tempo de descanso - Observações - Tempo - Feito?
-       Esteira  -     10     -15.61 -        60         -     N/A     -    1  -  ☐
+    | Não há treinos para este dia.
     
+        SEXTA        
+    | Exercício | Repetições | Peso | Tempo de descanso | Observações | Tempo | Feito?
+    |  Esteira  |     10     |15.61 |        60         |     N/A     |    1  |  ☐
+
         SABADO
-    - Exercício - Repetições - Peso - Tempo de descanso - Observações - Tempo - Feito?
-       Flexão   -     10     -15.61 -        60         -     N/A     -    1  -  ☐
-        
+    | Não há treinos para este dia.
+    
         DOMINGO
-    - Exercício - Repetições - Peso - Tempo de descanso - Observações - Tempo - Feito?
-       Flexão   -     10     -15.61 -        60         -     N/A     -    1  -  ☐       
+    | Não há treinos para este dia.
 `
 
 
