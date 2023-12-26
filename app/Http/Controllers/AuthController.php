@@ -16,6 +16,7 @@ class AuthController extends Controller
     public function store(Request $request)
     {
         try {
+
             $data = $request->only('email', 'password');
 
             $request->validate([
