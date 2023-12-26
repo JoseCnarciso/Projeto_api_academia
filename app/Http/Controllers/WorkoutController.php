@@ -7,6 +7,7 @@ use App\Models\Student;
 use App\Models\Workout;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class WorkoutController extends Controller
@@ -16,7 +17,12 @@ class WorkoutController extends Controller
     {
         try {
 
-            $authenticatedUser = $request->user();
+            if (!Auth::check()) {
+
+                return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
+            }
+
+            $authenticatedUserId = Auth::user()->id;
 
             $data = $request->validate([
                 'student_id' => 'required|exists:students,id',
@@ -30,17 +36,28 @@ class WorkoutController extends Controller
             ]);
 
             $studentExists = Student::find($data['student_id']);
-            $exerciseExists = Exercises::find($data['exercise_id']);
 
             if (!$studentExists) {
+
                 return $this->error('Estudante não encontrado', Response::HTTP_BAD_REQUEST);
             }
+
+            if ($studentExists->user_id !== $authenticatedUserId) {
+
+                return $this->error('Usuário não autorizado para cadastrar treinos para este aluno', Response::HTTP_UNAUTHORIZED);
+            }
+
+
+            $exerciseExists = Exercises::find($data['exercise_id']);
+
             if (!$exerciseExists) {
+
                 return $this->error('Exercício não encontrado', Response::HTTP_BAD_REQUEST);
             }
 
-            if ($studentExists->user_id !== $authenticatedUser->id) {
-                return $this->error('Você não tem permissão para cadastrar treinos para este aluno', Response::HTTP_FORBIDDEN);
+            if ($exerciseExists->user_id !== $authenticatedUserId) {
+
+                return $this->error('Usuário não autorizado para cadastrar treinos com este exercício', Response::HTTP_UNAUTHORIZED);
             }
 
             $existingWorkouts = Workout::where('day', $data['day'])
@@ -49,7 +66,8 @@ class WorkoutController extends Controller
                 ->count();
 
             if ($existingWorkouts > 0) {
-                return $this->error('O exercício já foi cadastrado para o estudante neste dia', Response::HTTP_CONFLICT);
+
+                return $this->error('Este exercício já foi cadastrado para o estudante neste dia', Response::HTTP_CONFLICT);
             }
 
             $totalWorkoutsForDay = Workout::where('day', $data['day'])
@@ -57,6 +75,7 @@ class WorkoutController extends Controller
                 ->count();
 
             if ($totalWorkoutsForDay >= 12) {
+
                 return $this->error('Limite de 12 exercícios atingido para o dia selecionado', Response::HTTP_CONFLICT);
             }
 
@@ -81,6 +100,7 @@ class WorkoutController extends Controller
             );
 
         } catch (\Exception $exception) {
+
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
