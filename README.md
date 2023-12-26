@@ -234,7 +234,7 @@ Response JSON
     "id": 2,
     "description": "Abdominal",
     "user_id": 1
-    }
+}
 
 ```
 
