@@ -292,7 +292,8 @@ Request exemplo:
 
 ##
 Response
-```http
+
+`
 
                                 Lista de exercícios para a semana
 
@@ -323,7 +324,7 @@ Nome: SAMANTA
         DOMINGO
     - Exercício - Repetições - Peso - Tempo de descanso - Observações - Tempo - Feito?
        Flexão   -     10     -15.61 -        60         -     N/A     -    1  -  ☐       
-```
+`
 
 
 | Response Status       | Descrição                           |
