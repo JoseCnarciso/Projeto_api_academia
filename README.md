@@ -296,10 +296,10 @@ Response
 
                                 Lista de exercícios para a semana
 
-            Nome: SAMANTA
+Nome: SAMANTA
 
 
-        SEGUNDA
+ SEGUNDA
     - Não há treinos para este dia.
 
         TERÇA
@@ -309,21 +309,20 @@ Response
     - Não há treinos para este dia.
 
         QUINTA
-    - Exercício | Repetições | Peso | Tempo de descanso | Observações | Tempo | Feito?
-       Esteira  |     10     |15.61 |        60         |     N/A     |    1  |  ☐
+    - Exercício - Repetições - Peso - Tempo de descanso - Observações - Tempo - Feito?
+       Esteira  -     10     -15.61 -        60         -     N/A     -    1  -  ☐
         
         SEXTA        
-    - Exercício | Repetições | Peso | Tempo de descanso | Observações | Tempo | Feito?
-       Flexão   |     10     |15.61 |        60         |     N/A     |    1  |  ☐
-        
+    - Exercício - Repetições - Peso - Tempo de descanso - Observações - Tempo - Feito?
+       Esteira  -     10     -15.61 -        60         -     N/A     -    1  -  ☐
+    
         SABADO
-    - Exercício | Repetições | Peso | Tempo de descanso | Observações | Tempo | Feito?
-       Flexão   |     10     |15.61 |        60         |     N/A     |    1  |  ☐
+    - Exercício - Repetições - Peso - Tempo de descanso - Observações - Tempo - Feito?
+       Flexão   -     10     -15.61 -        60         -     N/A     -    1  -  ☐
         
         DOMINGO
-    - Exercício | Repetições | Peso | Tempo de descanso | Observações | Tempo | Feito?
-       Flexão   |     10     |15.61 |        60         |     N/A     |    1  |  ☐
-       
+    - Exercício - Repetições - Peso - Tempo de descanso - Observações - Tempo - Feito?
+       Flexão   -     10     -15.61 -        60         -     N/A     -    1  -  ☐       
 ```
 
 
