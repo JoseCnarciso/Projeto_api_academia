@@ -24,7 +24,7 @@ class User extends Authenticatable
         'cpf',
         'password',
         'plan_id'
-       ];
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -36,7 +36,7 @@ class User extends Authenticatable
         'remember_token',
         "updated_at",
         "created_at",
-        "remember_token"
+
     ];
 
     /**
@@ -48,4 +48,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function students()
+    {
+        return $this->hasMany(Students::class);
+    }
+
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class);
+    }
 }
