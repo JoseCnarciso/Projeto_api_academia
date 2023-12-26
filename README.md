@@ -33,7 +33,6 @@ Request exemplo:
 `/api/users/`
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :-------------------------------------------------- |
-
 | `id` | `int` | **Autoincremental**.|
 | `name` | `string` | **Obrigatório**. Nome completo |
 | `email` | `email` | **Obrigatório**. Email, único e válido   |
@@ -324,6 +323,7 @@ Response
         DOMINGO
     - Exercício | Repetições | Peso | Tempo de descanso | Observações | Tempo | Feito?
        Flexão   |     10     |15.61 |        60         |     N/A     |    1  |  ☐
+       
 ```
 
 
