@@ -19,11 +19,13 @@ class DashboardController extends Controller
     public function index(Request $request, ValidateLimitStudentsToUser $limitValidator)
     {
         try {
-            $authenticatedUser = Auth::user();
 
-            if (!$authenticatedUser) {
+            if (!Auth::check()) {
                 return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
             }
+
+            $authenticatedUser = Auth::user();
+
 
             $userPlan = $authenticatedUser->plan;
             $amountExercises = Exercises::where('user_id', $authenticatedUser->id)->count();
@@ -36,10 +38,11 @@ class DashboardController extends Controller
                 'registered_students' => $amountStudents,
                 'registered_exercises' => $amountExercises,
                 'current_user_plan' => "PLANO " . $userPlan->description,
-                'remaining_students' => $remainingStudents,
+                'remaining_students' => ($maxStudents === PHP_INT_MAX) ? 'ILIMITADO' : max(0, (int)$maxStudents - $amountStudents)
             ];
 
             return $response;
+
         } catch (\Exception $exception) {
 
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
