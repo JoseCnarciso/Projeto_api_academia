@@ -100,6 +100,10 @@ class ExerciseController extends Controller
             return $this->error('Você não tem permissão para excluir este exercício', Response::HTTP_FORBIDDEN);
         }
 
+        if ($exercise->isBeingUsed()) {
+        return $this->error('O exercício está sendo usado e não pode ser excluído', Response::HTTP_CONFLICT);
+    } 
+
         $student->delete();
 
         return $this->response('', Response::HTTP_NO_CONTENT);
