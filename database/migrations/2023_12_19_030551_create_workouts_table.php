@@ -20,8 +20,8 @@ return new class extends Migration
             $table->integer('time')->required();
             $table->timestamps();
 
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
-            $table->foreign('exercise_id')->references('id')->on('exercises')->onDelete('cascade');
+            $table->foreign('student_id')->references('id')->on('students');
+            $table->foreign('exercise_id')->references('id')->on('exercises');
         });
     }
 

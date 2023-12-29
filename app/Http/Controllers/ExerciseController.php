@@ -82,27 +82,36 @@ class ExerciseController extends Controller
     }
 
 
-    public function destroy($id)
-
-    {
-        if (!Auth::check()) {
-
-            return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
-        }
-
-        $authenticatedUserId = Auth::user()->id;
-
-        $student = Exercises::find($id);
-
-        if (!$student) return $this->error('ID não encontrado', Response::HTTP_NOT_FOUND);
-
-        if ($student->user_id !== $authenticatedUserId) {
-            return $this->error('Você não tem permissão para excluir este exercício', Response::HTTP_FORBIDDEN);
-        }
-
-        $student->delete();
-
-        return $this->response('', Response::HTTP_NO_CONTENT);
+    
+public function destroy($id)
+{
+    if (!Auth::check()) {
+        return $this->error('Usuário não autenticado', Response::HTTP_UNAUTHORIZED);
     }
+
+    $authenticatedUserId = Auth::user()->id;
+
+    $exercise = Exercises::find($id);
+
+    if (!$exercise) {
+        return $this->error('ID não encontrado', Response::HTTP_NOT_FOUND);
+    }
+
+    if ($exercise->user_id !== $authenticatedUserId) {
+
+        return $this->error('Você não tem permissão para excluir este exercício', Response::HTTP_FORBIDDEN);
+    }
+    
+    $count = AnotherModel::where('exercise_id', $exercise->id)->count();
+
+    if ($count > 0) {
+
+        return $this->error('O exercício está sendo usado e não pode ser excluído', Response::HTTP_CONFLICT);
+    }
+    
+    $exercise->delete();
+
+    return $this->response('', Response::HTTP_NO_CONTENT);
+}
 
 }
