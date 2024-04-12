@@ -113,3 +113,4 @@ class ExerciseController extends Controller
 
         return $this->response('', Response::HTTP_NO_CONTENT);
     }
+}
